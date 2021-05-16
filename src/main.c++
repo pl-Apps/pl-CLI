@@ -26,3 +26,194 @@ int main(int argc, char* argv[])
         cin>>cl;
     }
 }
+a
+a a
+a
+a
+
+aa
+a a
+a
+a
+
+aa
+a a
+a
+a
+
+aa
+a a
+a
+a
+
+aa
+a a
+a
+a
+
+aa
+a a
+a
+a
+
+aa
+a a
+a
+a
+
+aa
+a a
+a
+a
+
+aa
+a a
+a
+a
+
+aa
+a a
+a
+a
+
+aa
+a a
+a
+a
+
+aa
+a a
+a
+a
+
+aa
+a a
+a
+a
+
+aa
+a a
+a
+a
+
+aa
+a a
+a
+a
+
+aa
+a a
+a
+a
+
+aa
+a a
+a
+a
+
+aa
+a a
+a
+a
+
+aa
+a a
+a
+a
+
+aa
+a a
+a
+a
+
+aa
+a a
+a
+a
+
+aa
+a a
+a
+a
+
+aa
+a a
+a
+a
+
+aa
+a a
+a
+a
+
+aa
+a a
+a
+a
+
+aa
+a a
+a
+a
+
+aa
+a a
+a
+a
+
+aa
+a a
+a
+a
+
+aa
+a a
+a
+a
+
+aa
+a a
+a
+a
+
+aa
+a a
+a
+a
+
+aa
+a a
+a
+a
+
+aa
+a a
+a
+a
+
+aa
+a a
+a
+a
+
+aa
+a a
+a
+a
+
+aa
+a a
+a
+a
+
+aa
+a a
+a
+a
+
+aa
+a a
+a
+a
+
+a
