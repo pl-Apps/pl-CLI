@@ -1,15 +1,12 @@
-#include <stdio.h>
-#include <string>
-#include <iostream>
+#include "main.h"
 
 using namespace std;
 
-const float version = 1.0;
+float version = 1.0;
 
 bool loop = true;
 
-string prefix = "ciao";
-string cl;
+char* prefix = "$: ";
 
 int main(int argc, char* argv[])
 {
@@ -22,7 +19,9 @@ int main(int argc, char* argv[])
     cout<<"\n";
     while(loop)
     {
-        cout<<prefix;
-        cin>>cl;
+        char* line = readline(prefix);
+        printf(line);
+        if(!line) break;
+        if(*line) add_history(line);
     }
 }

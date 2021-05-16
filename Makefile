@@ -16,11 +16,11 @@ help:
 	@echo "make installreq     Install all required component"
 	@echo 
 build:
-	@g++ -o bin/pl-CLI src/main.c++
+	@g++ src/main.c++ -lreadline -o bin/pl-CLI
 run:
 	@./bin/pl-CLI
 build-run:
-	@g++ -o bin/pl-CLI src/main.c++
+	@g++ src/main.c++ -lreadline -o bin/pl-CLI
 	@echo
 	@./bin/pl-CLI
 commit:
