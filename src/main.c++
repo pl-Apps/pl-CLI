@@ -6,7 +6,7 @@ float version = 1.0;
 
 bool loop = true;
 
-char* prefix = "$: ";
+char* prefix = "$ ";
 
 int main(int argc, char* argv[])
 {
@@ -16,11 +16,10 @@ int main(int argc, char* argv[])
     }
     cout<<"pl-CLI v";
     cout<<version;
-    cout<<"\n";
+    cout<<".0\n";
     while(loop)
     {
         char* line = readline(prefix);
-        printf(line);
         if(!line) break;
         if(*line) add_history(line);
     }

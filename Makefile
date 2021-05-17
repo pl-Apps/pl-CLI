@@ -31,6 +31,8 @@ commit:
 addorigin:
 	@git init
 	@git remote add origin https://github.com/pl-Apps/pl-CLI.git
+br:
+	@make build-run
 install:
 	@make build
 	@sudo mv ./bin/pl-CLI /bin/pl-CLI
@@ -40,6 +42,7 @@ installreq:
 	@sudo apt update
 	@sudo apt install gcc
 	@sudo apt install make
+	@sudo apt install libreadline-dev
 	@sudo apt update
 	@echo
 	@echo Installation completed
