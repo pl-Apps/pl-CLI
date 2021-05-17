@@ -16,13 +16,13 @@ help:
 	@echo "make installreq     Install all required component"
 	@echo 
 build:
-	@g++ src/main.c++ -lreadline -o bin/pl-CLI
+	@pkg .
 run:
 	@./bin/pl-CLI
 build-run:
-	@g++ src/main.c++ -lreadline -o bin/pl-CLI
+	@pkg .
 	@echo
-	@./bin/pl-CLI
+	@./pl-CLI-linux
 commit:
 	@git init
 	@git add .
@@ -35,14 +35,14 @@ br:
 	@make build-run
 install:
 	@make build
-	@sudo mv ./bin/pl-CLI /bin/pl-CLI
+	@sudo cp ./bin/pl-CLI-linux /bin/pl-CLI
 	@echo
 	@echo Installation completed
 installreq:
 	@sudo apt update
-	@sudo apt install gcc
-	@sudo apt install make
-	@sudo apt install libreadline-dev
+	@sudo apt install nodejs
+	@npm install colors
+	@npm install console-read-write
 	@sudo apt update
 	@echo
 	@echo Installation completed

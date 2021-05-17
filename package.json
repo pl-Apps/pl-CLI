@@ -1,0 +1,12 @@
+{
+  "name": "pl-CLI",
+  "author": "Peppo",
+  "main": "src/app.js",
+  "bin": "src/app.js",
+  "pkg": {
+  },
+  "dependencies": {
+    "colors": "^1.4.0",
+    "console-read-write": "^0.1.1"
+  }
+}
