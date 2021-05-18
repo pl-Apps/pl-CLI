@@ -1,3 +1,6 @@
+try
+{
+console.log("Loading pl-CLI...")
 const io = require("console-read-write")
 const http = require("http")
 const https = require("https")
@@ -10,6 +13,7 @@ main()
 
 async function main()
 {
+    console.clear()
     while(true)
     {
         const line = await io.ask("$".blue)
@@ -18,6 +22,7 @@ async function main()
             console.log("help                                   print this message")
             console.log("version                                print this pl-CLI version")
             console.log("clear                                  clear the interface")
+            console.log("print <value>                          print value")
             console.log("exit <exit code>                       kill pl-CLI process")
             console.log("get-http <url>                         get a file (http) from a url")
             console.log("get-https <url> <output file>          get a file (https) from a url")
@@ -32,24 +37,53 @@ async function main()
         {
             console.clear()
         }
+        else if(line.split(" ")[0] == "print")
+        {
+            console.log(line.split("\"")[1])
+        }
         else if(line.split(" ")[0] == "exit")
         {
             process.exit(line.split("\"")[1])
         }
         else if(line.split(" ")[0] == "get-http")
         {
-            console.log(http.get(line.split("\"")[1]))
+            try
+            {
+                const file = filesystem.createWriteStream(line.split("\"")[3])
+                http.get(line.split("\"")[1], function(response) { 
+                    response.pipe(file)
+                })
+            }
+            catch
+            {
+                console.log("Err:".white + "Impossible to get file".red)
+                try {filesystem.unlinkSync(line.split("\"")[3]); } catch {}
+            }
         }
         else if(line.split(" ")[0] == "get-https")
         {
-            const file = filesystem.createWriteStream("file.txt")
-            https.get(line.split("\"")[1], function(response) { 
-                console.log(response.pipe(file))
-            })
+            try
+            {
+                const file = filesystem.createWriteStream(line.split("\"")[3])
+                https.get(line.split("\"")[1], function(response) { 
+                    response.pipe(file)
+                })
+            }
+            catch
+            {
+                console.log("Err:".white + "Impossible to get file".red)
+                try {filesystem.unlinkSync(line.split("\"")[3]); } catch {}
+            }
         }
         else
         {
             console.log(("\"" + line.split(" ")[0] + "\" is not definied.").red)
         }
     }
+}
+}
+// application exception
+catch
+{
+    console.log("Err: Application error".red)
 }

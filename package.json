@@ -3,10 +3,10 @@
   "author": "Peppo",
   "main": "src/app.js",
   "bin": "src/app.js",
-  "pkg": {
-  },
+  "pkg": {},
   "dependencies": {
     "colors": "^1.4.0",
-    "console-read-write": "^0.1.1"
+    "console-read-write": "^0.1.1",
+    "https": "^1.0.0"
   }
 }

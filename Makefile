@@ -7,6 +7,7 @@ help:
 	@echo "make run            Run application"
 	@echo "make build-run      Build and run application"
 	@echo "make commit         Commit application"
+	@echo "make newrelease     Create a new application release"
 	@echo "make addorigin      Add application origin for commit"
 	@echo "make install        Install application"
 	@echo
@@ -46,3 +47,9 @@ installreq:
 	@sudo apt update
 	@echo
 	@echo Installation completed
+newrelese:
+	@make build
+	@let newv=$(cat ./private/version)+1
+	@gh release create v$newv.0 ./plOS.iso
+	@rm ./bin/*
+	@echo $newv > private/version
