@@ -17,12 +17,12 @@ help:
 	@echo 
 build:
 	@pkg .
+	@mv pl-CLI-* ./bin/
 run:
 	@./bin/pl-CLI
 build-run:
-	@pkg .
-	@echo
-	@./pl-CLI-linux
+	@make build
+	@./bin/pl-CLI-linux
 commit:
 	@git init
 	@git add .
