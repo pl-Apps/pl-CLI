@@ -7,6 +7,8 @@
   "dependencies": {
     "colors": "^1.4.0",
     "console-read-write": "^0.1.1",
+    "fs": "*",
+    "http": "*",
     "https": "^1.0.0",
     "os": "^0.1.1"
   }

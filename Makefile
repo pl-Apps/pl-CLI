@@ -46,6 +46,10 @@ installreq:
 	@sudo apt install nodejs
 	@sudo npm install colors
 	@sudo npm install console-read-write
+	@sudo npm install http
+	@sudo npm install https
+	@sudo npm install fs
+	@sudo npm install os
 	@sudo apt update
 	@echo
 	@echo Installation completed
