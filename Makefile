@@ -6,7 +6,7 @@ help:
 	@echo "make build          Build application"
 	@echo "make run            Run application"
 	@echo "make build-run      Build and run application"
-	@echo "make commit         Commit application"
+	@echo "make push           Push application"
 	@echo "make newrelease     Create a new application release"
 	@echo "make addorigin      Add application origin for commit"
 	@echo "make install        Install application"
@@ -26,14 +26,16 @@ run:
 build-run:
 	@make build
 	@./bin/pl-CLI-linux
-commit:
+push:
 	@git init
 	@git add .
 	@git commit -m "New commit"
 	@git push -u origin master --force
 addorigin:
 	@git init
-	@git remote add origin https://github.com/pl-Apps/pl-CLI.git
+	@echo Repository name:
+	@set repo=$(read)
+	@git remote add origin https://github.com/$repo
 br:
 	@make build-run
 install:
