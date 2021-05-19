@@ -22,7 +22,7 @@ build:
 build-desktop:
 	@electron-forge build ./desktop-app/
 run:
-	@./bin/pl-CLI
+	@node .
 build-run:
 	@make build
 	@./bin/pl-CLI-linux
