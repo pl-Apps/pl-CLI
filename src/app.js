@@ -19,11 +19,17 @@ async function main()
 {
     if(filesystem.existsSync("/tmp"))
     {
-        console.log("Linux")
+        if(filesystem.existsSync("/tmp/pl-CLI-login.pz"))
+        {
+
+        }
     }
     else if(filesystem.existsSync(process.env.temp) != undefined)
     {
-        console.log("Windows")
+        if(filesystem.existsSync(process.env.temp + "pl-CLI-login.pz"))
+        {
+
+        }
     }
     else
     {
