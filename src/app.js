@@ -2,10 +2,14 @@ try
 {
 console.log("Loading pl-CLI...")
 const io = require("console-read-write")
+const os = require("os");
+const exec = require("child_process").exec
 const http = require("http")
 const https = require("https")
 const colors = require("colors")
-const filesystem = require("fs")
+const filesystem = require("fs");
+var curdir = __dirname;
+const prefix = ("(pl-CLI@root)-[" + curdir + "]\n" + "$".blue)
 
 const version = "1.0"
 
@@ -13,10 +17,22 @@ main()
 
 async function main()
 {
-    console.clear()
+    if(filesystem.existsSync("/tmp"))
+    {
+        console.log("Linux")
+    }
+    else if(filesystem.existsSync(process.env.temp) != undefined)
+    {
+        console.log("Windows")
+    }
+    else
+    {
+        console.log("Used filesystem is not supported")
+    }
+    //console.clear()
     while(true)
     {
-        const line = await io.ask("$".blue)
+        const line = await io.ask(prefix)
         if(line.split(" ")[0] == "help")
         {
             console.log("help                                   print this message")
@@ -28,6 +44,7 @@ async function main()
             console.log("get-https <url> <output file>          get a file (https) from a url")
             console.log("plgit [ARGS]                           run plgit commands")
             console.log("system <command>                       run system command")
+            console.log("node <command>                         run node.js command")
         }
         else if(line.split(" ")[0] == "version")
         {
@@ -56,7 +73,7 @@ async function main()
             }
             catch
             {
-                console.log("Err:".white + "Impossible to get file".red)
+                console.log("Err:".white + " Impossible to get file".red)
                 try {filesystem.unlinkSync(line.split("\"")[3]); } catch {}
             }
         }
@@ -71,13 +88,21 @@ async function main()
             }
             catch
             {
-                console.log("Err:".white + "Impossible to get file".red)
+                console.log("Err:".white + " Impossible to get file".red)
                 try {filesystem.unlinkSync(line.split("\"")[3]); } catch {}
             }
         }
+        else if(line.split(" ")[0] == "system")
+        {
+            exec(line.split("\"")[1])
+        }
+        else if(line.split(" ")[0] == "node")
+        {
+            eval(line.split("\"")[1])
+        }
         else
         {
-            console.log(("\"" + line.split(" ")[0] + "\" is not definied.").red)
+            console.log(("\"" + line.split(" ")[0] + "\" is not definied.\n").red)
         }
     }
 }

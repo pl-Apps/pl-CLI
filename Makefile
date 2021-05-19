@@ -19,6 +19,8 @@ help:
 build:
 	@pkg .
 	@mv pl-CLI-* ./bin/
+build-desktop:
+	@electron-forge build ./desktop-app/
 run:
 	@./bin/pl-CLI
 build-run:
@@ -42,14 +44,12 @@ install:
 installreq:
 	@sudo apt update
 	@sudo apt install nodejs
-	@npm install colors
-	@npm install console-read-write
+	@sudo npm install colors
+	@sudo npm install console-read-write
 	@sudo apt update
 	@echo
 	@echo Installation completed
 newrelese:
 	@make build
-	@let newv=$(cat ./private/version)+1
-	@gh release create v$newv.0 ./plOS.iso
+	@gh release create v1.0 ./bin/*
 	@rm ./bin/*
-	@echo $newv > private/version
