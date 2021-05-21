@@ -9,8 +9,7 @@ const https = require("https")
 const colors = require("colors")
 const filesystem = require("fs");
 var username = "root"
-var curdir = __dirname;
-var prefix = ("┌──(".white + "pl-CLI".red + "@".white + username.yellow +")-[" + curdir + "]")
+var curdir = os.homedir();
 const version = "1.0"
 
 main()
@@ -27,7 +26,6 @@ function readfile(filename)
 async function main()
 {
     console.clear()
-    //prefix = ("| (".white + "pl-CLI".red + "@".white + username.yellow +")-[" + curdir + "]\n| " + "$".blue)
     while(true)
     {
         curdir = curdir.replace("/home/" * "/", "~")
@@ -41,6 +39,7 @@ async function main()
             console.log("exit <exit code>                       kill pl-CLI process")
             console.log("get-http <url>                         get a file (http) from a url")
             console.log("get-https <url> <output file>          get a file (https) from a url")
+            console.log("ol <dir>                               get file and directory list")
             console.log("plgit [ARGS]                           run plgit commands")
             console.log("system <command>                       run system command")
             console.log("node <command>                         run node.js command")
@@ -89,6 +88,21 @@ async function main()
             {
                 console.log("Err:".white + " Impossible to get file".red)
                 try {filesystem.unlinkSync(line.split("\"")[3]); } catch {}
+            }
+        }
+        else if(line.split(" ")[0] == "ol")
+        {
+            if(line.split("\"")[1] == undefined)
+            {
+                filesystem.readdirSync(curdir, async(dir) => {
+                    console.log(dir)
+                })
+            }
+            else
+            {
+                filesystem.readdirSync(line.split("\"")[1], async(dir) => {
+                    console.log(dir)
+                })
             }
         }
         else if(line.split(" ")[0] == "system")
