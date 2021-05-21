@@ -8,37 +8,30 @@ const http = require("http")
 const https = require("https")
 const colors = require("colors")
 const filesystem = require("fs");
+var username = "root"
 var curdir = __dirname;
-const prefix = ("(pl-CLI@root)-[" + curdir + "]\n" + "$".blue)
-
+var prefix = ("┌──(".white + "pl-CLI".red + "@".white + username.yellow +")-[" + curdir + "]")
 const version = "1.0"
 
 main()
 
+function readfile(filename)
+{
+    const fs = require("fs")
+    fs.readFile(filename, "utf8" , async(data) => {
+        console.log(data)
+        await io.ask()
+    })
+}
+
 async function main()
 {
-    if(filesystem.existsSync("/tmp"))
-    {
-        if(filesystem.existsSync("/tmp/pl-CLI-login.pz"))
-        {
-
-        }
-    }
-    else if(filesystem.existsSync(process.env.temp) != undefined)
-    {
-        if(filesystem.existsSync(process.env.temp + "pl-CLI-login.pz"))
-        {
-
-        }
-    }
-    else
-    {
-        console.log("Used filesystem is not supported")
-    }
-    //console.clear()
+    console.clear()
+    //prefix = ("| (".white + "pl-CLI".red + "@".white + username.yellow +")-[" + curdir + "]\n| " + "$".blue)
     while(true)
     {
-        const line = await io.ask(prefix)
+        curdir = curdir.replace("/home/" * "/", "~")
+        const line = await io.ask("┌──(".white + "pl-CLI".red + "@".white + username.yellow +")-[" + curdir + "]" + "\n└─" + "$".blue)
         if(line.split(" ")[0] == "help")
         {
             console.log("help                                   print this message")
@@ -80,14 +73,14 @@ async function main()
             catch
             {
                 console.log("Err:".white + " Impossible to get file".red)
-                try {filesystem.unlinkSync(line.split("\"")[3]); } catch {}
+                try {filesystem.unlinkSync(curdir + "/" + line.split("\"")[3]); } catch {}
             }
         }
         else if(line.split(" ")[0] == "get-https")
         {
             try
             {
-                const file = filesystem.createWriteStream(line.split("\"")[3])
+                const file = filesystem.createWriteStream(curdir + "/" + line.split("\"")[3])
                 https.get(line.split("\"")[1], function(response) { 
                     response.pipe(file)
                 })
@@ -104,7 +97,24 @@ async function main()
         }
         else if(line.split(" ")[0] == "node")
         {
-            eval(line.split("\"")[1])
+            try { eval(line.split("\"")[1]) } catch(ex) {console.log("Err: ".white + String(ex).red)}
+        }
+        else if(line.split(" ")[0] == "")
+        {
+            
+        }
+        else if(line.split(" ")[0] == "cd")
+        {
+            if(filesystem.existsSync(line.split("\"")[1]))
+            {
+                curdir = line.split("\"")[1]
+                __dirname = curdir
+                prefix = ("(pl-CLI@root)-[" + curdir + "]\n" + "$".blue)
+            }
+            else
+            {
+                console.log("Err:".white + " No such directory".red)
+            }
         }
         else
         {
