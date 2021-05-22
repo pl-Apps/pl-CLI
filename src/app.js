@@ -4,12 +4,11 @@ console.log("Loading pl-CLI...")
 const io = require("console-read-write")
 const os = require("os");
 const exec = require("child_process").exec
-const client = new discordclient()
 const http = require("http")
 const https = require("https")
 const colors = require("colors")
 const filesystem = require("fs");
-var username = undefined
+var username = "Peppo"
 var curdir = __dirname
 var vieweddir = "~"
 const version = "2.0"
@@ -26,32 +25,38 @@ if(process.argv.length > 2)
     }
     process.exit(1)
 }
-if(filesystem.existsSync("/tmp/pl-CLI-login.pz")) {
-    filesystem.readFile("/tmp/pl-CLI-login.pz", "utf8" , function(err, data) {
-        if(data == undefined)
-        {
-            // Not logged (empty file)
-
-        }
-        else
-        {
-            // Logged file
-
-        }
-    })
-} else {
-    // Not logged (file not exist)
-    
-}
 
 main()
 
 async function main()
 {
+    if(filesystem.existsSync("/tmp/pl-CLI-login.pz")) {
+        filesystem.readFile("/tmp/pl-CLI-login.pz", "utf8" , async(err, data) => {
+            if(data == undefined)
+            {
+                // Not logged (empty file)
+                username = await io.ask("New username: ".yellow)
+                filesystem.writeFile("/tmp/pl-CLI-login.pz", username, function(err) {})
+            }
+            else
+            {
+                // Logged file
+                filesystem.readFile("/tmp/pl-CLI-login.pz", "utf8" , async(err, data) => {
+                    username = data
+                })
+            }
+        })
+    } else {
+        // Not logged (file not exist)
+        username = await io.ask("New username: ".yellow)
+        filesystem.writeFile("/tmp/pl-CLI-login.pz", username, function(err) {})
+    }
+
+    // END LOADING LOGIN
+
     try { filesystem.mkdir("./installed-packages", function(err) {}); } catch {}
     console.clear()
     while(true) {
-        curdir = curdir.replace("/home/" * "/", "~")
         if(curdir == os.homedir()) {
             vieweddir = "~"
         } else {
