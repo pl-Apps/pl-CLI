@@ -41,12 +41,9 @@ async function main()
     console.clear()
     while(true) {
         curdir = curdir.replace("/home/" * "/", "~")
-        if(curdir == os.homedir())
-        {
+        if(curdir == os.homedir()) {
             vieweddir = "~"
-        }
-        else
-        {
+        } else {
             vieweddir = curdir
         }
         const line = await io.ask("┌──(".white + "pl-CLI".red + "@".white + username.yellow + ")-[" + vieweddir + "]" + "\n└─" + "$".blue)
