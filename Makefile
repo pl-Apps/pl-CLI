@@ -19,8 +19,6 @@ help:
 build:
 	@pkg .
 	@mv pl-CLI-* ./bin/
-build-desktop:
-	@electron-forge build ./desktop-app/
 run:
 	@node .
 build-run:
@@ -55,7 +53,7 @@ installreq:
 	@sudo apt update
 	@echo
 	@echo Installation completed
-newrelese:
+newrelease:
 	@make build
-	@gh release create v1.0 ./bin/*
+	@gh release create v2.0 ./bin/*
 	@rm ./bin/*

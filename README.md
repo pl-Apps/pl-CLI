@@ -23,3 +23,9 @@ make run
 make addorigin
 make push
 ```
+
+## Create a new release 
+
+```sh
+make newrelease
+```
