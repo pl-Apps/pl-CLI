@@ -11,7 +11,8 @@ const https = require("https")
 const colors = require("colors")
 const filesystem = require("fs");
 var username = "root"
-var curdir = os.homedir();
+var curdir = __dirname
+var vieweddir = "~"
 const version = "2.0"
 
 if(process.argv.length > 2)
@@ -36,13 +37,19 @@ function readfile(filename)
 
 async function main()
 {
-    try { filesystem.mkdir("./installed-packages", function(err) {
-        
-    }); } catch {}
+    try { filesystem.mkdir("./installed-packages", function(err) {}); } catch {}
     console.clear()
     while(true) {
         curdir = curdir.replace("/home/" * "/", "~")
-        const line = await io.ask("┌──(".white + "pl-CLI".red + "@".white + username.yellow + ")-[" + curdir + "]" + "\n└─" + "$".blue)
+        if(curdir == os.homedir())
+        {
+            vieweddir = "~"
+        }
+        else
+        {
+            vieweddir = curdir
+        }
+        const line = await io.ask("┌──(".white + "pl-CLI".red + "@".white + username.yellow + ")-[" + vieweddir + "]" + "\n└─" + "$".blue)
         if (line.split(" ")[0] == "help") {
             console.log("help                                       print this message")
             console.log("version                                    print this pl-CLI version")
@@ -94,13 +101,19 @@ async function main()
             }
         } else if (line.split(" ")[0] == "ol") {
             if (line.split("\"")[1] == undefined) {
-                filesystem.readdirSync(curdir, async (dir) => {
-                    console.log(dir)
-                })
+                filesystem.readdir(curdir, (err, files) => {
+                    console.log("\n")
+                    files.forEach(file => {
+                      console.log(file);
+                    });
+                });
             } else {
-                filesystem.readdirSync(line.split("\"")[1], async (dir) => {
-                    console.log(dir)
-                })
+                filesystem.readdir(line.split("\"")[1], (err, files) => {
+                    console.log("\n")
+                    files.forEach(file => {
+                      console.log(file);
+                    });
+                });
             }
         } else if (line.split(" ")[0] == "system") {
             exec(line.split("\"")[1])
@@ -132,7 +145,7 @@ async function main()
         }
         else if (line.split(" ")[0] == "pkg-uninstall")
         {
-            try { filesystem.unlink("installed-packages/" + line.split("\"")[1] + ".plclipkg") } catch { console.log("Err:".white + " Impossible to remove the specified package".red)}
+            try { filesystem.unlink("installed-packages/" + line.split("\"")[1] + ".plclipkglear") } catch { console.log("Err:".white + " Impossible to remove the specified package".red)}
         }
         else if (line.split(" ")[0] == "pkg-publish")
         {
