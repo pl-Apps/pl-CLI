@@ -8,7 +8,7 @@ const http = require("http")
 const https = require("https")
 const colors = require("colors")
 const filesystem = require("fs");
-var username = "Peppo"
+var username = ""
 var curdir = __dirname
 var vieweddir = "~"
 const version = "2.0"
@@ -30,18 +30,19 @@ main()
 
 async function main()
 {
-    if(filesystem.existsSync("/tmp/pl-CLI-login.pz")) {
-        filesystem.readFile("/tmp/pl-CLI-login.pz", "utf8" , async(err, data) => {
-            if(data == undefined)
+    try { await filesystem.mkdirSync("./installed-packages", function(err) {}); } catch {}
+    try { await filesystem.mkdirSync("./config", function(err) {}); } catch {}
+    console.clear()
+    if(filesystem.existsSync("./config/pl-CLI-login.pz")) {
+        filesystem.readFile("./config/pl-CLI-login.pz", "utf8" , async(err, data) => {
+            if(data == "")
             {
                 // Not logged (empty file)
                 username = await io.ask("New username: ".yellow)
-                filesystem.writeFile("/tmp/pl-CLI-login.pz", username, function(err) {})
-            }
-            else
-            {
+                await filesystem.writeFileSync("./config/pl-CLI-login.pz", username, function(err) {})
+            } else {
                 // Logged file
-                filesystem.readFile("/tmp/pl-CLI-login.pz", "utf8" , async(err, data) => {
+                await filesystem.readFileSync("./config/pl-CLI-login.pz", "utf8" , async(err, data) => {
                     username = data
                 })
             }
@@ -49,12 +50,10 @@ async function main()
     } else {
         // Not logged (file not exist)
         username = await io.ask("New username: ".yellow)
-        filesystem.writeFile("/tmp/pl-CLI-login.pz", username, function(err) {})
+        await filesystem.writeFileSync("./config/pl-CLI-login.pz", username, function(err) {})
     }
 
     // END LOADING LOGIN
-
-    try { filesystem.mkdir("./installed-packages", function(err) {}); } catch {}
     console.clear()
     while(true) {
         if(curdir == os.homedir()) {
@@ -71,7 +70,7 @@ async function main()
             console.log("exit <exit code>                           kill pl-CLI process")
             console.log("get-http <url>                             get a file (http) from a url")
             console.log("get-https <url> <output file>              get a file (https) from a url")
-            console.log("ol <dir>                                   get file and directory list")
+            console.log("fl <dir>                                   get file list")
             console.log("plgit [ARGS]                               run plgit commands")
             console.log("system <command>                           run system command")
             console.log("node <command>                             run node.js command")
@@ -112,14 +111,14 @@ async function main()
                 } catch {
                 }
             }
-        } else if (line.split(" ")[0] == "ol") {
+        } else if (line.split(" ")[0] == "fl") {
             if (line.split("\"")[1] == undefined) {
-                filesystem.readdir(curdir, (err, files) => {
+                try { filesystem.readdir(curdir, (err, files) => {
                     console.log("\n")
                     files.forEach(file => {
                       console.log(file);
-                    });
-                });
+                    })
+                }) } catch { console.log("Err: ".white + "Impossible to get the file list")}
             } else {
                 filesystem.readdir(line.split("\"")[1], (err, files) => {
                     console.log("\n")
@@ -148,32 +147,27 @@ async function main()
             } else {
                 console.log("Err:".white + " No such directory".red)
             }
-        } 
-        else if (line.split(" ")[0] == "pkg-install")
-        {
+        } else if (line.split(" ")[0] == "pkg-install") {
             const file = filesystem.createWriteStream("installed-packages/" + line.split("/")[line.split("/").length] + ".plclipkg")
             https.get("https://registry-plcli.cf/packages/" + line.split("\"")[1], function(response) {
                 response.pipe(file)
             })
-        }
-        else if (line.split(" ")[0] == "pkg-uninstall")
-        {
+        } else if (line.split(" ")[0] == "pkg-uninstall") {
             try { filesystem.unlink("installed-packages/" + line.split("\"")[1] + ".plclipkglear") } catch { console.log("Err:".white + " Impossible to remove the specified package".red)}
-        }
-        else if (line.split(" ")[0] == "pkg-publish")
-        {
+        } else if (line.split(" ")[0] == "pkg-publish") {
             
-        }
-        else
-        {
+        } else if(line.split(" ")[0] == "logout") {
+            filesystem.unlink("./config/pl-CLI-login.pz", function(err) {})
+            console.clear()
+            process.exit(0)
+        } else {
             console.log(("\"" + line.split(" ")[0] + "\" is not definied.\n").red)
         }
     }
 }
 }
 // application exception
-catch(ex)
-{
+catch(ex) {
     console.log("Err: Application error".red)
     console.log("\n\nFull error: " + String(ex))
 }
