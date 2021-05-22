@@ -31,26 +31,26 @@ main()
 async function main()
 {
     try { await filesystem.mkdirSync("./installed-packages", function(err) {}); } catch {}
-    try { await filesystem.mkdirSync("./config", function(err) {}); } catch {}
+    try { await filesystem.mkdirSync(os.homedir() + "/config", function(err) {}); } catch {}
     console.clear()
-    if(filesystem.existsSync("./config/pl-CLI-login.pz")) {
-        filesystem.readFile("./config/pl-CLI-login.pz", "utf8" , async(err, data) => {
+    if(filesystem.existsSync(os.homedir() + "/config//pl-CLI-login.pz")) {
+        filesystem.readFile(os.homedir() + "/config//pl-CLI-login.pz", "utf8" , async(err, data) => {
             if(data == "")
             {
                 // Not logged (empty file)
-                username = await io.ask("New username: ".yellow)
-                await filesystem.writeFileSync("./config/pl-CLI-login.pz", username, function(err) {})
+                username = await io.ask("New username:".yellow)
+                await filesystem.writeFileSync(os.homedir() + "/config//pl-CLI-login.pz", username, function(err) {})
             } else {
                 // Logged file
-                await filesystem.readFileSync("./config/pl-CLI-login.pz", "utf8" , async(err, data) => {
+                await filesystem.readFileSync(os.homedir() + "/config//pl-CLI-login.pz", "utf8" , async(err, data) => {
                     username = data
                 })
             }
         })
     } else {
         // Not logged (file not exist)
-        username = await io.ask("New username: ".yellow)
-        await filesystem.writeFileSync("./config/pl-CLI-login.pz", username, function(err) {})
+        username = await io.ask("New username:".yellow)
+        await filesystem.writeFileSync(os.homedir() + "/config//pl-CLI-login.pz", username, function(err) {})
     }
 
     // END LOADING LOGIN
@@ -68,7 +68,7 @@ async function main()
             console.log("clear                                      clear the interface")
             console.log("print <value>                              print value")
             console.log("exit <exit code>                           kill pl-CLI process")
-            console.log("get-http <url>                             get a file (http) from a url")
+            console.log("get-http <url> <output file>               get a file (http) from a url")
             console.log("get-https <url> <output file>              get a file (https) from a url")
             console.log("fl <dir>                                   get file list")
             console.log("plgit [ARGS]                               run plgit commands")
@@ -157,7 +157,7 @@ async function main()
         } else if (line.split(" ")[0] == "pkg-publish") {
             
         } else if(line.split(" ")[0] == "logout") {
-            filesystem.unlink("./config/pl-CLI-login.pz", function(err) {})
+            filesystem.unlink(os.homedir() + "/config//pl-CLI-login.pz", function(err) {})
             console.clear()
             process.exit(0)
         } else {
