@@ -4,13 +4,12 @@ console.log("Loading pl-CLI...")
 const io = require("console-read-write")
 const os = require("os");
 const exec = require("child_process").exec
-const discordclient = require("discord.js").Client
 const client = new discordclient()
 const http = require("http")
 const https = require("https")
 const colors = require("colors")
 const filesystem = require("fs");
-var username = "root"
+var username = undefined
 var curdir = __dirname
 var vieweddir = "~"
 const version = "2.0"
@@ -19,21 +18,33 @@ if(process.argv.length > 2)
 {
     if(process.argv[2] == "version")
     {
-        console.log("pl-CLI v" + version.red)
+        console.log("pl-CLI v" + version)
+    }
+    else
+    {
+        console.log("Err:".white + " Invalid argument".red)
     }
     process.exit(1)
 }
+if(filesystem.existsSync("/tmp/pl-CLI-login.pz")) {
+    filesystem.readFile("/tmp/pl-CLI-login.pz", "utf8" , function(err, data) {
+        if(data == undefined)
+        {
+            // Not logged (empty file)
+
+        }
+        else
+        {
+            // Logged file
+
+        }
+    })
+} else {
+    // Not logged (file not exist)
+    
+}
 
 main()
-
-function readfile(filename)
-{
-    const fs = require("fs")
-    fs.readFile(filename, "utf8" , async(data) => {
-        console.log(data)
-        await io.ask()
-    })
-}
 
 async function main()
 {
@@ -156,7 +167,8 @@ async function main()
 }
 }
 // application exception
-catch
+catch(ex)
 {
     console.log("Err: Application error".red)
+    console.log("\n\nFull error: " + String(ex))
 }
