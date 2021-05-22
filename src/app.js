@@ -8,6 +8,9 @@ const http = require("http")
 const https = require("https")
 const colors = require("colors")
 const filesystem = require("fs");
+var variablesname = []
+var variablescontent = []
+var variablesnumber = 0
 var username = ""
 var curdir = __dirname
 var vieweddir = "~"
@@ -83,8 +86,23 @@ async function main()
             console.clear()
         } else if (line.split(" ")[0] == "print") {
             console.log(line.split("\"")[1])
+        } else if (line.split(" ")[0] == "printf") {
+            let i = 0
+            variablesname.forEach(varname => {
+                if(varname == line.split("\"")[1])
+                {
+                    console.log(variablescontent[i])
+
+                }
+            i++
+            if (i = variablesnumber - 1) { console.log("Err".white + " \"" + line.split("\"")[1] + "\" is not definied".red) }
+            })
         } else if (line.split(" ")[0] == "exit") {
             process.exit(line.split("\"")[1])
+        } else if (line.split(" ")[0] == "var") {
+            variablesname[variablesnumber] = line.split("\"")[1]
+            variablesname[variablesnumber] = line.split("\"")[2]
+            variablesnumber++
         } else if (line.split(" ")[0] == "get-http") {
             try {
                 const file = filesystem.createWriteStream(line.split("\"")[3])
